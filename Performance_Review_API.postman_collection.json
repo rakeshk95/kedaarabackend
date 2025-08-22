@@ -1,0 +1,869 @@
+{
+	"info": {
+		"_postman_id": "performance-review-api",
+		"name": "Performance Review API",
+		"description": "Complete API collection for the Performance Review System",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"user@company.com\",\n  \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"refresh_token\": \"{{refresh_token}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/refresh",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/auth/logout",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Performance Cycles",
+			"item": [
+				{
+					"name": "Get Active Performance Cycle",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/performance-cycles/active",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"performance-cycles",
+								"active"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Performance Cycles",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/performance-cycles?status=active&page=1&limit=10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"performance-cycles"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "active"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Performance Cycle",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Q1 2025 Performance Review\",\n  \"start_date\": \"2025-01-01\",\n  \"end_date\": \"2025-03-31\",\n  \"description\": \"Q1 performance review cycle\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/performance-cycles",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"performance-cycles"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User Management",
+			"item": [
+				{
+					"name": "Get Current User Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users/profile",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Available Reviewers",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users/reviewers?exclude_current_user=true",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"reviewers"
+							],
+							"query": [
+								{
+									"key": "exclude_current_user",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users?role=Employee&page=1&limit=10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "role",
+									"value": "Employee"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reviewer Selection (Mentee)",
+			"item": [
+				{
+					"name": "Submit Reviewer Selection",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"performance_cycle_id\": 1,\n  \"selected_reviewers\": [1, 2, 3],\n  \"comments\": \"Optional comments about selection\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/reviewer-selections",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"reviewer-selections"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get My Reviewer Selection",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/reviewer-selections/my-selection",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"reviewer-selections",
+								"my-selection"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Reviewer Selection",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"selected_reviewers\": [1, 2, 4],\n  \"comments\": \"Updated selection\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/reviewer-selections/{{selection_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"reviewer-selections",
+								"{{selection_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Mentor Approval",
+			"item": [
+				{
+					"name": "Get Pending Approvals",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/mentor/approvals/pending",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"mentor",
+								"approvals",
+								"pending"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Approvals",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/mentor/approvals?status=pending&page=1&limit=10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"mentor",
+								"approvals"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "pending"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Approve Reviewer Selection",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"comments\": \"Optional approval comments\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/mentor/approvals/{{selection_id}}/approve",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"mentor",
+								"approvals",
+								"{{selection_id}}",
+								"approve"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send Back Reviewer Selection",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"feedback\": \"Please add at least one more reviewer for comprehensive feedback\",\n  \"required_changes\": [\"add_more_reviewers\"]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/mentor/approvals/{{selection_id}}/send-back",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"mentor",
+								"approvals",
+								"{{selection_id}}",
+								"send-back"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Feedback Management (Reviewer)",
+			"item": [
+				{
+					"name": "Get Assigned Employees",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/reviewer/assignments",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"reviewer",
+								"assignments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Feedback Forms",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/reviewer/feedback-forms?status=draft&page=1&limit=10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"reviewer",
+								"feedback-forms"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "draft"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Feedback Form",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"employee_id\": 1,\n  \"performance_cycle_id\": 1,\n  \"strengths\": \"Alice shows excellent problem-solving skills and is a great team player.\",\n  \"improvements\": \"Could improve time management and documentation skills.\",\n  \"overall_rating\": \"tracking_expected\",\n  \"status\": \"draft\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/reviewer/feedback-forms",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"reviewer",
+								"feedback-forms"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Feedback Form",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"strengths\": \"Updated strengths feedback\",\n  \"improvements\": \"Updated improvements feedback\",\n  \"overall_rating\": \"tracking_above\",\n  \"status\": \"submitted\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/reviewer/feedback-forms/{{form_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"reviewer",
+								"feedback-forms",
+								"{{form_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Dashboard",
+			"item": [
+				{
+					"name": "Get Dashboard Stats",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/dashboard/stats",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"dashboard",
+								"stats"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin/HR Management",
+			"item": [
+				{
+					"name": "Get System Overview",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/overview",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"overview"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Performance Review Reports",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/reports/performance-reviews?cycle_id=1&department=Engineering",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"reports",
+								"performance-reviews"
+							],
+							"query": [
+								{
+									"key": "cycle_id",
+									"value": "1"
+								},
+								{
+									"key": "department",
+									"value": "Engineering"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Export Performance Data",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/export/performance-data?cycle_id=1&format=csv",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"export",
+								"performance-data"
+							],
+							"query": [
+								{
+									"key": "cycle_id",
+									"value": "1"
+								},
+								{
+									"key": "format",
+									"value": "csv"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Notifications",
+			"item": [
+				{
+					"name": "Get User Notifications",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/notifications?unread_only=true&page=1&limit=10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"notifications"
+							],
+							"query": [
+								{
+									"key": "unread_only",
+									"value": "true"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Mark Notification as Read",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/notifications/{{notification_id}}/read",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"notifications",
+								"{{notification_id}}",
+								"read"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000/api/v1",
+			"type": "string"
+		},
+		{
+			"key": "access_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "refresh_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "selection_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "form_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "notification_id",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

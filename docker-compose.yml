@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  # FastAPI Application
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=mssql+aioodbc://sa:Oliva@9876@111.93.26.122/kedaara?driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes
+      - SECRET_KEY=your-super-secret-key-here-change-in-production
+      - DEBUG=True
+      - LOG_LEVEL=INFO
+    depends_on:
+      - sqlserver
+    volumes:
+      - .:/app
+    restart: unless-stopped
+    networks:
+      - fastapi-network
+
+  # SQL Server Database
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourStrong@Passw0rd
+      - MSSQL_PID=Developer
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    restart: unless-stopped
+    networks:
+      - fastapi-network
+
+  # Redis (for caching, sessions, etc.)
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    networks:
+      - fastapi-network
+
+  # Nginx (reverse proxy for production)
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - app
+    restart: unless-stopped
+    networks:
+      - fastapi-network
+    profiles:
+      - production
+
+volumes:
+  sqlserver_data:
+  redis_data:
+
+networks:
+  fastapi-network:
+    driver: bridge

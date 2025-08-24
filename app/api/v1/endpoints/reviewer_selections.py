@@ -15,7 +15,7 @@ from app.schemas.reviewer_selection import (
     MentorApprovalRequest,
     MentorSendBackRequest
 )
-from app.api.dependencies import get_current_user, get_current_superuser
+from app.api.dependencies import get_current_user, get_current_admin
 from app.models.user import User
 from app.core.logging import get_logger
 

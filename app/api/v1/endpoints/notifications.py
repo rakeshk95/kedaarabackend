@@ -13,7 +13,7 @@ from app.schemas.notification import (
     NotificationUpdate,
     NotificationResponse
 )
-from app.api.dependencies import get_current_user, get_current_superuser
+from app.api.dependencies import get_current_user, get_current_admin
 from app.models.user import User
 from app.core.logging import get_logger
 
@@ -113,7 +113,7 @@ def get_all_notifications(
     page: int = Query(1, ge=1, description="Page number"),
     limit: int = Query(10, ge=1, le=100, description="Items per page"),
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_superuser)
+    current_user: User = Depends(get_current_admin)
 ) -> List[NotificationResponse]:
     """
     Get all notifications (Admin/HR only).
@@ -139,7 +139,7 @@ def create_notification(
     notification_create: NotificationCreate,
     user_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_superuser)
+    current_user: User = Depends(get_current_admin)
 ) -> NotificationResponse:
     """
     Create notification for a user (Admin/HR only).
@@ -166,7 +166,7 @@ def update_notification(
     notification_id: int,
     notification_update: NotificationUpdate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_superuser)
+    current_user: User = Depends(get_current_admin)
 ) -> NotificationResponse:
     """
     Update notification (Admin/HR only).
@@ -192,7 +192,7 @@ def update_notification(
 def delete_notification(
     notification_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_superuser)
+    current_user: User = Depends(get_current_admin)
 ):
     """
     Delete notification (Admin/HR only).

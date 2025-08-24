@@ -13,7 +13,7 @@ from app.schemas.performance_cycle import (
     PerformanceCycleUpdate,
     PerformanceCycleResponse
 )
-from app.api.dependencies import get_current_user, get_current_superuser
+from app.api.dependencies import get_current_user, get_current_admin
 from app.models.user import User
 from app.core.logging import get_logger
 
@@ -56,7 +56,7 @@ def get_performance_cycles(
     page: int = Query(1, ge=1, description="Page number"),
     limit: int = Query(10, ge=1, le=100, description="Items per page"),
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_superuser)
+    current_user: User = Depends(get_current_admin)
 ) -> List[PerformanceCycleResponse]:
     """
     Get all performance cycles with optional filtering (Admin/HR only).
@@ -82,7 +82,7 @@ def get_performance_cycles(
 def create_performance_cycle(
     cycle_create: PerformanceCycleCreate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_superuser)
+    current_user: User = Depends(get_current_admin)
 ) -> PerformanceCycleResponse:
     """
     Create a new performance cycle (Admin/HR only).
@@ -107,7 +107,7 @@ def create_performance_cycle(
 def get_performance_cycle(
     cycle_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_superuser)
+    current_user: User = Depends(get_current_admin)
 ) -> PerformanceCycleResponse:
     """
     Get performance cycle by ID (Admin/HR only).
@@ -131,7 +131,7 @@ def update_performance_cycle(
     cycle_id: int,
     cycle_update: PerformanceCycleUpdate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_superuser)
+    current_user: User = Depends(get_current_admin)
 ) -> PerformanceCycleResponse:
     """
     Update performance cycle (Admin/HR only).
@@ -157,7 +157,7 @@ def update_performance_cycle(
 def delete_performance_cycle(
     cycle_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_superuser)
+    current_user: User = Depends(get_current_admin)
 ):
     """
     Delete performance cycle (Admin/HR only).

@@ -13,7 +13,7 @@ from app.schemas.feedback_form import (
     FeedbackFormUpdate,
     FeedbackFormResponse
 )
-from app.api.dependencies import get_current_user, get_current_superuser
+from app.api.dependencies import get_current_user, get_current_admin
 from app.models.user import User
 from app.core.logging import get_logger
 
@@ -275,7 +275,7 @@ def get_all_feedback_forms(
     page: int = Query(1, ge=1, description="Page number"),
     limit: int = Query(10, ge=1, le=100, description="Items per page"),
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_superuser)
+    current_user: User = Depends(get_current_admin)
 ) -> List[FeedbackFormResponse]:
     """
     Get all feedback forms (Admin/HR only).

@@ -2,6 +2,7 @@
 Security utilities for authentication and authorization.
 """
 
+import hashlib
 from datetime import datetime, timedelta
 from typing import Optional, Union, Any
 from jose import JWTError, jwt
@@ -31,12 +32,12 @@ def create_access_token(
         expire = datetime.utcnow() + expires_delta
     else:
         expire = datetime.utcnow() + timedelta(
-            minutes=settings.access_token_expire_minutes
+            minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES
         )
     
     to_encode = {"exp": expire, "sub": str(subject)}
     encoded_jwt = jwt.encode(
-        to_encode, settings.secret_key, algorithm=settings.algorithm
+        to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM
     )
     return encoded_jwt
 
@@ -53,7 +54,7 @@ def verify_token(token: str) -> Optional[str]:
     """
     try:
         payload = jwt.decode(
-            token, settings.secret_key, algorithms=[settings.algorithm]
+            token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
         )
         subject: str = payload.get("sub")
         if subject is None:
@@ -74,7 +75,13 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
     Returns:
         bool: True if password matches, False otherwise
     """
-    return pwd_context.verify(plain_password, hashed_password)
+    # Try bcrypt first, then fallback to simple SHA-256
+    try:
+        return pwd_context.verify(plain_password, hashed_password)
+    except Exception:
+        # Fallback to simple SHA-256 for compatibility
+        simple_hash = hashlib.sha256(plain_password.encode()).hexdigest()
+        return simple_hash == hashed_password
 
 
 def get_password_hash(password: str) -> str:

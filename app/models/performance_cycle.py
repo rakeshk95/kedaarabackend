@@ -4,9 +4,10 @@ Performance Cycle database model.
 
 from datetime import datetime
 from sqlalchemy import Column, Integer, String, DateTime, Text
+from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
-from app.core.database import Base
+from . import Base
 
 
 class PerformanceCycle(Base):
@@ -22,6 +23,10 @@ class PerformanceCycle(Base):
     description = Column(Text, nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.getutcdate())
     updated_at = Column(DateTime(timezone=True), onupdate=func.getutcdate())
+    
+    # Relationships
+    reviewer_selections = relationship("ReviewerSelection", back_populates="performance_cycle")
+    feedback_forms = relationship("FeedbackForm", back_populates="performance_cycle")
     
     def __repr__(self) -> str:
         return f"<PerformanceCycle(id={self.id}, name='{self.name}', status='{self.status}')>"

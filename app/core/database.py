@@ -3,10 +3,10 @@ Database configuration and session management.
 """
 
 from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
 
 from app.core.config import settings
+from app.models import Base
 
 # Create SQLAlchemy engine
 engine = create_engine(
@@ -21,9 +21,6 @@ engine = create_engine(
 
 # Create SessionLocal class
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-# Create Base class for models
-Base = declarative_base()
 
 
 def get_db() -> Session:

@@ -11,6 +11,7 @@ from app.core.database import get_db
 from app.core.security import verify_token
 from app.services.user_service import UserService
 from app.models.user import User
+from app.utils.exceptions import UserNotFoundException
 
 # Security scheme
 security = HTTPBearer()
@@ -77,24 +78,24 @@ def get_current_active_user(
     return current_user
 
 
-def get_current_superuser(
+def get_current_admin(
     current_user: User = Depends(get_current_user)
 ) -> User:
     """
-    Get current superuser.
+    Get current admin user.
     
     Args:
         current_user: Current authenticated user
         
     Returns:
-        User: Current superuser
+        User: Current admin user
         
     Raises:
-        HTTPException: If user is not a superuser
+        HTTPException: If user is not an admin
     """
-    if not current_user.is_superuser:
+    if current_user.role not in ["System Administrator", "HR Lead"]:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=status.HTTP_403_FORBIDDEN,
             detail="The user doesn't have enough privileges"
         )
     return current_user
